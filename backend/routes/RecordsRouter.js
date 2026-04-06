@@ -86,14 +86,46 @@ router.post(
  * @swagger
  * /api/records:
  *   get:
- *     summary: Get all financial records
+ *     summary: Get financial records (with optional filtering)
  *     tags: [Records]
  *     description: >
  *       **ADMIN and ANALYST.** Returns all financial records in the system.
- *       Requires a valid `accessToken` cookie or Bearer token.
+ *       Supports optional filtering by type, category, and date range.
+ *       
+ *       Note: For simplicity, analysts can view all records. In production,
+ *       this can be restricted based on user ownership.
  *     security:
- *       - cookieAuth: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *           enum: [INCOME, EXPENSE]
+ *         description: Filter records by type
+ *         example: EXPENSE
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: >
+ *           Filter records by category.
+ *           Example values: Food, Salary, Transport, Freelance, Shopping, Bonus, Utilities
+ *         example: Food
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter records from this date (YYYY-MM-DD)
+ *         example: 2026-04-01
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter records up to this date (YYYY-MM-DD)
+ *         example: 2026-04-06
  *     responses:
  *       200:
  *         description: List of records retrieved successfully
