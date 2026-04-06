@@ -3,6 +3,7 @@ const RecordsModel = require('../models/RecordsModel');
 const GetDashboardData = async (req, res) => {
     try {
         const { userId } = req.user;
+        console.log(userId);
         const records = await RecordsModel.find({ userId });
         const totalIncome = records.filter(record => record.type === 'INCOME').reduce((acc, record) => acc + record.amount, 0);
         const totalExpense = records.filter(record => record.type === 'EXPENSE').reduce((acc, record) => acc + record.amount, 0);

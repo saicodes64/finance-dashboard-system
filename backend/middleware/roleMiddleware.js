@@ -30,6 +30,9 @@ const authorizeRole = (...allowedRoles) => {
     }
 
     if (!allowedRoles.includes(userRole)) {
+      if (allowedRoles.length === 1 && allowedRoles[0] === 'ADMIN') {
+        return res.status(403).json({ message: 'Access denied: Admins only' });
+      }
       return res.status(403).json({
         success: false,
         message: `Forbidden: Role '${userRole}' is not permitted to access this resource. Required: [${allowedRoles.join(', ')}]`,

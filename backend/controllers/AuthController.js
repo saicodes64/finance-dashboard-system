@@ -42,6 +42,10 @@ module.exports.Login = async (req, res) => {
       return res.status(404).json({ message: 'Couldn’t find your Zorvyn Account' });
     }
 
+    if (user.isActive === false) {
+      return res.status(403).json({ message: 'This account has been disabled. Please contact support.' });
+    }
+
     const auth = await bcrypt.compare(password, user.password);
     if (!auth) {
       return res.status(401).json({ message: 'Wrong password' });
